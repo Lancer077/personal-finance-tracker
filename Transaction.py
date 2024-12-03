@@ -61,3 +61,4 @@ class Transaction:
         if self._category_name != "":
             info += f"\tCategory: {self._category_name}"
         return info
+        

@@ -488,17 +488,11 @@ class Controller:
         
 
 
-
-
-
-        
-
-
         
     def retrieve_transactions():
         MainUI.MainUI.retrieve_transactions()
-        Operations.print_transactions(transaction_list)
-        MainUI.MainUI.wait_for_user_input()
+        transactions = Operations.print_transactions(transaction_list)
+        MainUI.MainUI.utility_print(transactions)
         return
 
     
@@ -575,11 +569,6 @@ class Controller:
 
 
 def testing(test_login, test_income, test_expense, test_asset, test_stock, test_liability, test_category, test_category_2):
-    if test_login:
-        if account.new_user == True:  #if we have a new user
-            Controller.new_user_setup()
-        else:
-            Controller.user_login()
     if test_income:
         Operations.create_and_add_transaction(transaction_list, "500.10", "10/10/10", "test 1", "income")
         Operations.create_and_add_transaction(transaction_list, "300.22", "10/11/10", "test 2", "income")
@@ -613,6 +602,11 @@ def testing(test_login, test_income, test_expense, test_asset, test_stock, test_
         Operations.categorize_entity(entity_portfolio, category_list, "4", "test", "liability")
         Operations.categorize_entity(entity_portfolio, category_list, "5", "Default Category", "liability")
 
+        if test_login:
+            if account.new_user == True:  #if we have a new user
+                Controller.new_user_setup()
+            else:
+                Controller.user_login()
         
 
 
@@ -621,8 +615,8 @@ def testing(test_login, test_income, test_expense, test_asset, test_stock, test_
 def main():
     #this lets us set testing conditions when we start the program
     #I'm sure that I'm not the only one who doesn't want to have to add stuff manually every time for testing
-    do_testing = False  #will not do the testing, regardless of any other values (this testing variable has the highest priority)
-    test_login = False
+    do_testing = True  #will not do the testing, regardless of any other values (this testing variable has the highest priority)
+    test_login = True
     test_income = True
     test_expense = True
     test_asset = True

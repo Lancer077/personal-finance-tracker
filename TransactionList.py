@@ -68,19 +68,21 @@ class TransactionList:
     def get_transaction_count(self) -> float:
         return self._transaction_count
     
-    def print_expenses(self) -> None:
+    def print_expenses(self) -> str:
         expense_list = ("Expense List:\n")
         for expense in self._expense_transactions:
             expense_list += f"{expense.print_transaction()}\n"
         return expense_list
     
-    def print_incomes(self) -> None:
+    def print_incomes(self) -> str:
         income_list = "Income List:\n"
         for income in self._income_transactions:
             income_list += f"{income.print_transaction()}\n"
         return income_list
     
-    def print_transactions(self) -> None:
-        TransactionList.print_expenses(self)
-        TransactionList.print_incomes(self)
+    def print_transactions(self) -> str:
+        transactions = "Transaction List: \n\n"
+        transactions += TransactionList.print_incomes(self)
+        transactions += f"\n{TransactionList.print_expenses(self)}"
+        return transactions
         

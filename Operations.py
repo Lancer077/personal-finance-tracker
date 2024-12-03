@@ -158,14 +158,14 @@ def category_management_menu_delete_category_operations(category_list: CategoryL
     
     
 
-def print_transactions(transaction_list):
-    transaction_list.print_transactions()
+def print_transactions(transaction_list:TransactionList) -> str:
+    return transaction_list.print_transactions()
 
 
-def print_income_list(transaction_list):
+def print_income_list(transaction_list: TransactionList) -> str:
     return transaction_list.print_incomes()
 
-def print_expense_list(transaction_list):
+def print_expense_list(transaction_list: TransactionList) -> str:
     return transaction_list.print_expenses()
 
 
