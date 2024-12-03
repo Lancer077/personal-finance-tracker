@@ -14,6 +14,7 @@ import TransactionList
 import UserAccount
 import CategoryList
 import Category
+import mysql.connector #for database
 
 
 entity_portfolio = EntityPortfolio.EntityPortfolio()
