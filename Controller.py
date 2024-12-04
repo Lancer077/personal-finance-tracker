@@ -646,7 +646,7 @@ def testing(test_login, test_income, test_expense, test_asset, test_stock, test_
 def main():
     #this lets us set testing conditions when we start the program
     #I'm sure that I'm not the only one who doesn't want to have to add stuff manually every time for testing
-    do_testing = True  #will not do the testing, regardless of any other values (this testing variable has the highest priority)
+    do_testing = False  #will not do the testing, regardless of any other values (this testing variable has the highest priority)
     test_login = False
     test_income = True
     test_expense = True
@@ -656,6 +656,12 @@ def main():
     test_category = True
     test_category_2 = True #only make this true if income, expense, asset, stock, liability, and category are true also
 
+    #before anything, check whether database connection is established
+    Validator.validate_database_connection()
+
+    #now that database connection is established, fill pull its data and store in program's memory
+    Operations.pull_incomes_from_database(transaction_list)
+    
     #now we call the method that does the testing stuff
     if do_testing:
         testing(test_login, test_income, test_expense, test_asset, test_stock, test_liability, test_category, test_category_2)

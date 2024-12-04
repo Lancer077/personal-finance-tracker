@@ -13,7 +13,7 @@ class TransactionList:
         self._transaction_count += 1  #increment our transaction count
         income.set_transaction_id(self._transaction_count)
         self._income_transactions.append(income)
-        self._total_income += income._amount
+        self._total_income += income.get_amount()
     
     def add_expense_transaction(self, expense: Transaction) -> None:
         self._transaction_count += 1  #increment our transaction count

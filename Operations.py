@@ -7,6 +7,7 @@ import EntityPortfolio
 import UserAccount
 import Category
 import CategoryList
+import mysql.connector #allows Python to talk to MySQL database
 
 
 def create_user_account_operations(account: UserAccount, password: str, pin: str):
@@ -14,7 +15,6 @@ def create_user_account_operations(account: UserAccount, password: str, pin: str
     account.set_password(password)
     account.set_pin(pin)
     
-
 
 
 def create_and_add_transaction(transaction_list: TransactionList, amount, date, desc, type: str):
@@ -25,6 +25,9 @@ def create_and_add_transaction(transaction_list: TransactionList, amount, date, 
 
     if type == "income":
         transaction_list.add_income_transaction(transaction)
+        #Now, store the income transaction into the database
+        add_income_to_database(transaction)
+
     
     elif type == "expense":
         transaction_list.add_expense_transaction(transaction)
@@ -176,3 +179,55 @@ def print_expense_list(transaction_list):
     return transaction_list.print_expenses()
 
 
+'''
+WARNING: This function will CRASH the program if you're not on at least: mysql-connector version 2.2.9
+Run in bash: pip install --upgrade mysql-connector-python
+'''
+def add_income_to_database(income_transaction: Transaction):
+    #Validator.validate_database_connection() proves that db connection is established. But, keep try-catch in case of unforseen failure?
+    try:
+        db = mysql.connector.connect(user='advfi_user', password='advfi_password', host='localhost', database='advfi_database')
+        db_cursor = db.cursor() #cursor() acts as an interace between AdvFi and the database
+        add_income_query = ("INSERT INTO income (amount, transaction_date, trans_desc, category_name, id) "
+                        "VALUES (%s, %s, %s, %s, %s)") # '%s' is a SQL.connector placeholder for ANY datatype...so we WIN!
+        
+        new_income_data = (income_transaction.get_amount(), income_transaction.get_transaction_date(),
+                        income_transaction.get_description(), income_transaction.get_category_name(), income_transaction.get_transaction_id() )
+
+        #add the data to database using the above query
+        db_cursor.execute(add_income_query, new_income_data) #execute() sends query to the SQL database server for execution
+        db.commit() #commit() saves changes, made by cursor(), into the database
+
+        #close database connection; avoid any possible trouble because we good programmer
+        db_cursor.close()
+        db.close()
+    except Exception as e:
+        print(f"Could not store income to database. Error: {e}")
+
+def pull_incomes_from_database(transaction_list: TransactionList):
+    try:
+        db = mysql.connector.connect(user='advfi_user', password='advfi_password', host='localhost', database='advfi_database')
+        db_cursor = db.cursor()
+
+        db_cursor.execute("SELECT * FROM income")
+        incomes = db_cursor.fetchall()
+
+        #go through each attribute, income-by-income
+        for row in incomes:
+            amount = row[0]
+            trans_date = row[1]
+            desc = row[2]
+            category_name = row[3]
+            trans_id = row[4]
+
+            #add transaction to the transaction_list
+            trans = Transaction.Transaction(amount, trans_date, desc) #limits of Transaction.__init__
+            trans.set_category_name(category_name)
+            trans.set_transaction_id(trans_id)
+            transaction_list.add_income_transaction(trans)
+
+        #close database connection
+        db_cursor.close()
+        db.close()
+    except Exception as e:
+        print(f"Could not grab income to database Please exit AdvFi and fix to save your data. Error: {e}")
