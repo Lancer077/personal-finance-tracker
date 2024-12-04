@@ -184,20 +184,15 @@ WARNING: This function will CRASH the program if you're not on at least: mysql-c
 Run in bash: pip install --upgrade mysql-connector-python
 '''
 def add_income_to_database(income_transaction: Transaction):
-    #first, open database connection (need to VALIDATE connection somewhere else first?)
+    #Validator.validate_database_connection() proves that db connection is established. But, keep try-catch in case of unforseen failure?
     try:
         db = mysql.connector.connect(user='advfi_user', password='advfi_password', host='localhost', database='advfi_database')
         db_cursor = db.cursor() #cursor() acts as an interace between AdvFi and the database
-        add_income_query = ("INSERT INTO income (amount, transaction_date, trans_desc, category_name) "
-                        "VALUES (%s, %s, %s, %s)") # '%s' is a SQL.connector placeholder for ANY datatype...so we WIN!
+        add_income_query = ("INSERT INTO income (amount, transaction_date, trans_desc, category_name, id) "
+                        "VALUES (%s, %s, %s, %s, %s)") # '%s' is a SQL.connector placeholder for ANY datatype...so we WIN!
         
         new_income_data = (income_transaction.get_amount(), income_transaction.get_transaction_date(),
-                        income_transaction.get_description(), income_transaction.get_category_name() )
-                            #add in income_transaction.Transaction.get_id once you id to the database table
-        
-        #print(new_income_data) #testing purposes
-
-        print(income_transaction.get_description())
+                        income_transaction.get_description(), income_transaction.get_category_name(), income_transaction.get_transaction_id() )
 
         #add the data to database using the above query
         db_cursor.execute(add_income_query, new_income_data) #execute() sends query to the SQL database server for execution
@@ -207,4 +202,4 @@ def add_income_to_database(income_transaction: Transaction):
         db_cursor.close()
         db.close()
     except Exception as e:
-        print(f"Could not store income to datbase. Error: {e}")
+        print(f"Could not store income to database. Error: {e}")

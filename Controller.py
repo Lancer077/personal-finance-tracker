@@ -656,6 +656,9 @@ def main():
     test_category = True
     test_category_2 = True #only make this true if income, expense, asset, stock, liability, and category are true also
 
+    #before anything, check whether database connection is established
+    Validator.validate_database_connection()
+
     #now we call the method that does the testing stuff
     if do_testing:
         testing(test_login, test_income, test_expense, test_asset, test_stock, test_liability, test_category, test_category_2)
