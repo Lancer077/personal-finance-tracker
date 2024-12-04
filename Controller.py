@@ -95,6 +95,8 @@ class Controller:
     
     def new_user_setup():
         new_pass = MainUI.MainUI.create_password()  #always assume the password is valid
+        while not Validator.validate_new_password(new_pass):
+            new_pass = MainUI.MainUI.create_password()
 
         new_pin = MainUI.MainUI.create_pin()
         while not Validator.validate_pin(new_pin):

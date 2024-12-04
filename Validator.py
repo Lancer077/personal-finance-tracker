@@ -215,5 +215,12 @@ def validate_pin(pin: str):
         return False #do not allow negative pins because that's just silly
     return True
 
+
+def validate_new_password(input_password: str) -> bool:
+    if len(input_password) < 7:
+        MainUI.MainUI.utility_print("Error: Password must be 8 characters or longer")
+        return False
+    return True
+
 def validate_password(account: UserAccount, input_password: str):
     return account.check_password(input_password)
