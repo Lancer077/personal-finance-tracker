@@ -203,3 +203,31 @@ def add_income_to_database(income_transaction: Transaction):
         db.close()
     except Exception as e:
         print(f"Could not store income to database. Error: {e}")
+
+def pull_incomes_from_database(transaction_list: TransactionList):
+    try:
+        db = mysql.connector.connect(user='advfi_user', password='advfi_password', host='localhost', database='advfi_database')
+        db_cursor = db.cursor()
+
+        db_cursor.execute("SELECT * FROM income")
+        incomes = db_cursor.fetchall()
+
+        #go through each attribute, income-by-income
+        for row in incomes:
+            amount = row[0]
+            trans_date = row[1]
+            desc = row[2]
+            category_name = row[3]
+            trans_id = row[4]
+
+            #add transaction to the transaction_list
+            trans = Transaction.Transaction(amount, trans_date, desc) #limits of Transaction.__init__
+            trans.set_category_name(category_name)
+            trans.set_transaction_id(trans_id)
+            transaction_list.add_income_transaction(trans)
+
+        #close database connection
+        db_cursor.close()
+        db.close()
+    except Exception as e:
+        print(f"Could not grab income to database Please exit AdvFi and fix to save your data. Error: {e}")
