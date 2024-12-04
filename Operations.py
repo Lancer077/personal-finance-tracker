@@ -7,6 +7,7 @@ import EntityPortfolio
 import UserAccount
 import Category
 import CategoryList
+import mysql.connector #allows Python to talk to MySQL database
 
 
 def create_user_account_operations(account: UserAccount, password: str, pin: str):
@@ -14,7 +15,6 @@ def create_user_account_operations(account: UserAccount, password: str, pin: str
     account.set_password(password)
     account.set_pin(pin)
     
-
 
 
 def create_and_add_transaction(transaction_list: TransactionList, amount, date, desc, type: str):
@@ -25,6 +25,9 @@ def create_and_add_transaction(transaction_list: TransactionList, amount, date, 
 
     if type == "income":
         transaction_list.add_income_transaction(transaction)
+        #Now, store the income transaction into the database
+        add_income_to_database(transaction)
+
     
     elif type == "expense":
         transaction_list.add_expense_transaction(transaction)
@@ -176,3 +179,20 @@ def print_expense_list(transaction_list):
     return transaction_list.print_expenses()
 
 
+def add_income_to_database(income_transaction: Transaction):
+    #first, open database connection (need to VALIDATE connection somewhere else first?)
+    db = mysql.connector.connect(user='advfi_user', password='advfi_password', host='localhost', database='advfi_database')
+    db_cursor = db.cursor() #cursor() acts as an interace between AdvFi and the database
+    add_income_query = ("INSERT INTO income (amount, transaction_date, trans_desc, category_name) "
+                    "VALUES (%s, %s, %s, %s)") # '%s' is a SQL.connector placeholder for ANY datatype...so we WIN!
+    new_income_data = (income_transaction.Transaction.get_amount(), income_transaction.Transaction.get_transaction_date(),
+                       income_transaction.Transaction.get_description(), income_transaction.Transaction.get_category_name() )
+                        #add in income_transaction.Transaction.get_id once you id to the database table
+
+    #add the data to database using the above query
+    db_cursor.execute(add_income_query, new_income_data) #execute() sends query to the SQL database server for execution
+    db.commit() #commit() saves changes, made by cursor(), into the database
+
+    #close database connection; avoid any possible trouble because we good programmer
+    db_cursor.close()
+    db.close()
