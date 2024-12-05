@@ -1,8 +1,6 @@
 from datetime import date
 
 class Transaction:
-    
-    _transaction_ID = -1
 
     def __init__(self, amount: float, transaction_date: date, description: str = ""):
         self._amount = amount
@@ -10,10 +8,11 @@ class Transaction:
         self._description = description
         self._category_name = ""
         self._within_last_month = self._is_within_last_month()
+        self._transaction_ID = -1
     
     # return the transaction ID
     def get_transaction_id(self) -> str:
-        return self._transaction_id
+        return self._transaction_ID
     
     def set_transaction_id(self, new_ID: str) -> bool:
         if self._transaction_ID == -1:

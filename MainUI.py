@@ -170,7 +170,7 @@ class MainUI:
 
     
     @staticmethod
-    def categorize_transaction(transaction_list):
+    def categorize_transaction(transaction_list: str):
         MainUI.clear_screen()
         print(transaction_list)
         print("Enter the ID of the transaction you would like to categorize\nEnter -1 to cancel this operation")
@@ -182,7 +182,7 @@ class MainUI:
         MainUI.wait_for_user_input()
     
     @staticmethod
-    def categorize_entity(entity_list):
+    def categorize_entity(entity_list: str):
         MainUI.clear_screen()
         print(entity_list)
         print("Enter the ID of the item you would like to categorize\nEnter -1 to cancel this operation")
@@ -242,7 +242,7 @@ class MainUI:
         print("Would you like to link this asset with a stock? (y/n)")
         return input()
     
-    def asset_management_menu_delete_asset(asset_list):
+    def asset_management_menu_delete_asset(asset_list: str):
         MainUI.clear_screen()
         print(asset_list)
         print("\nEnter the ID of the asset you would like to remove\nEnter -1 to cancel the operation")
@@ -287,19 +287,6 @@ class MainUI:
         MainUI.clear_screen()
         print("\nTransactions")
 
-
-    @staticmethod
-    def alert_center_menu():
-        MainUI.clear_screen()
-        print("\nAlert Center Menu")
-        print("1: Create alert")
-        print("2: Delete alert")
-        print("3: Edit alert")
-        print("4: Retrieve current alerts")
-        print("5: Dismiss alert")
-        print("0: Return to main menu")
-
-
     @staticmethod
     def program_settings_menu():
         MainUI.clear_screen()
@@ -321,7 +308,7 @@ class MainUI:
         return input()
 
     @staticmethod
-    def category_menu_show_category_names(name_list) -> None:
+    def category_menu_show_category_names(name_list: str) -> None:
         MainUI.clear_screen()
         print(name_list)
         MainUI.wait_for_user_input()        
@@ -363,7 +350,7 @@ class MainUI:
         MainUI.wait_for_user_input()
 
     
-    def remove_transaction_failure(transaction_id):
+    def remove_transaction_failure(transaction_id: int):
         print(f"Transaction ID {transaction_id} was not found in the given list, nothing was removed")
 
     
@@ -375,15 +362,15 @@ class MainUI:
     def empty_name():
         print("Error: cannot enter an empty name")
 
-    def add_entity_success(entity_type): #should only ever be asset or liability
+    def add_entity_success(entity_type: str): #should only ever be asset or liability
         print(f"{entity_type} added successfully") #asset/liability added successfully
         MainUI.wait_for_user_input()
 
-    def stock_not_found(stock):
+    def stock_not_found(stock: str):
         print(f"{stock} was not found, please ensure correct spelling and that the stock is listed in yahoo finance\nAlso please ensure you are connected to the internet")
         
 
-    def remove_entity_success(entity_type):
+    def remove_entity_success(entity_type: str):
         print(f"{entity_type} removed successfully")
         MainUI.wait_for_user_input()
 
@@ -397,6 +384,7 @@ class MainUI:
 
     def integer_not_given():
         print("Please be sure to enter an integer")
+        
 
     def float_not_given():
         print("Please be sure to enter a number")
@@ -404,7 +392,7 @@ class MainUI:
     def pos_num_not_given():
         print("Please be sure to enter a number that is larger than zero")
 
-    def liability_payment_success(amount_paid, amount_left):
+    def liability_payment_success(amount_paid: float, amount_left: float):
         print(f"Sucessfully paid ${amount_paid}, ${amount_left} left to pay")
         MainUI.wait_for_user_input()
 

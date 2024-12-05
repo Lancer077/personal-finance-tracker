@@ -8,6 +8,7 @@ import TransactionList
 import UserAccount
 import Category
 import CategoryList
+import mysql.connector #allows Python to talk to MySQL database
 
 transaction_list = TransactionList.TransactionList()
 entity_portfolio = EntityPortfolio.EntityPortfolio()
@@ -215,5 +216,26 @@ def validate_pin(pin: str):
         return False #do not allow negative pins because that's just silly
     return True
 
+
+def validate_new_password(input_password: str) -> bool:
+    if len(input_password) < 7:
+        MainUI.MainUI.utility_print("Error: Password must be 8 characters or longer")
+        return False
+    return True
+
 def validate_password(account: UserAccount, input_password: str):
     return account.check_password(input_password)
+
+def validate_database_connection():
+    try:
+        db = mysql.connector.connect(user='advfi_user', password='advfi_password', host='localhost', database='advfi_database')
+        db_cursor = db.cursor() #cursor() acts as an interace between AdvFi and the database
+
+        #close database connection; avoid any possible trouble because we good programmer
+        db_cursor.close()
+        db.close()
+        print("Database connection established :)")
+    except Exception as e:
+        print(f"ERROR: Could not establish connection with database.\nReason for error: {e}")
+        print("Program exiting...")
+        exit(0)
