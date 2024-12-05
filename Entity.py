@@ -8,11 +8,12 @@ Notable Things: Will not let you set auto_update to True unless given a valid ti
 
 
 
+import StockFactory
 import Stock
 
 class Entity:
 
-    #constructor                          #change to enum
+    #constructor                          
     def __init__(self, entity_value:float, entity_amount:int, entity_name:str, entity_description, entity_auto_update, entity_stock_symbol):  
         self.single_value = entity_value
         if entity_amount == "":
@@ -28,7 +29,9 @@ class Entity:
             if not self.check_valid_symbol(entity_stock_symbol):
                 self.auto_update = False
                 print("Stock not found, cannot auto update")
-            cur_price = self.get_stock_value(entity_stock_symbol)
+                
+            self.stock = StockFactory.get_stock(entity_stock_symbol)
+            cur_price = self.stock.get_price()
             self.single_value = cur_price
             self.total_value = self.single_value * self.amount
             self.stock_symbol = entity_stock_symbol  # if a stock symbol is not provided, it will be assigned a default value of "n/a" 
@@ -51,7 +54,7 @@ class Entity:
     
     def get_total_value(self):
         if(self.auto_update):
-            self.single_value = self.get_stock_value(self.stock_symbol)
+            self.single_value = self.stock.get_price()
             self.real_value = self.amount * self.single_value
         return self.real_value
     
@@ -130,7 +133,7 @@ class Entity:
             if self.check_valid_symbol(new_stock_symbol):                                   # if the price == None, then that means the stock symbol was invalid
                 print("invalid stock symbol, cannot update")
                 return False
-            cur_price = self.get_stock_value(new_stock_symbol)
+            cur_price = self.stock.get_price()
             #if we reach this part of the code, we are in a state where the user wants the stock to auto update, and the symbol is valid
             self.auto_update = new_auto_update      #now we update all of the values accordingly
             self.stock_symbol = new_stock_symbol
@@ -169,12 +172,12 @@ class Entity:
         return False
     
     def check_valid_symbol(self, stock_symbol: str) -> bool:
-        is_stock = Stock.Stock.check_valid_stock_symbol(stock_symbol)
+        is_stock = StockFactory.check_valid_stock_symbol(stock_symbol)
         return is_stock
 
     
     def get_stock_value(self, stock_symbol: str) -> float:
-        price = Stock.Stock.get_stock_price(stock_symbol)
+        price = self.stock.get_stock_price(stock_symbol)
         return price
             
 

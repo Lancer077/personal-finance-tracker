@@ -355,14 +355,14 @@ class Controller:
             case 0:
                 return
 
-        
+
     def asset_management_menu_add_asset():
         #need num owned, value per entity, name, desc, auto update & stock symbol
         stop = False
         while not stop:
             is_stock = MainUI.MainUI.asset_management_menu_add_asset_is_stock()
             stop = Validator.Validator.validate_yes_no(is_stock)
-        
+
         num_owned = Controller._get_num_owned()
         if num_owned == "":
             num_owned = 1

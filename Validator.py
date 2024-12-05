@@ -1,4 +1,3 @@
-import Operations
 import Transaction
 from datetime import datetime
 import MainUI
@@ -9,6 +8,7 @@ import UserAccount
 import Category
 import CategoryList
 import Stock
+import StockFactory
 
 class Validator():
 
@@ -101,12 +101,6 @@ class Validator():
         return True
 
     @staticmethod
-    def are_transaction_details_valid(transaction_details: list, type: str) -> bool:
-        if len(transaction_details) == 3:
-            Operations.create_and_add_transaction(transaction_details, type)
-            return
-
-    @staticmethod
     def validate_transaction_id(transaction_list, transaction_id: str, type):
         if not Validator._validate_integer(transaction_id): #if we do not have a valid integer
             return False                            #automatically return false
@@ -178,7 +172,7 @@ class Validator():
     def validate_stock_symbol(stock_symbol: str):
         if stock_symbol == "":
             return False
-        if not Stock.Stock.check_valid_stock_symbol(stock_symbol):  #this means advfi couldn't find the corresponding stock
+        if not StockFactory.check_valid_stock_symbol(stock_symbol):  #this means advfi couldn't find the corresponding stock
             MainUI.MainUI.stock_not_found(stock_symbol)
             return False
         #if we make it here, then the user input stock symbol is valid
