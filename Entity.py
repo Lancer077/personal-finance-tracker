@@ -6,7 +6,7 @@ Notable Things: Will not let you set auto_update to True unless given a valid ti
 '''
 
 
-
+import Stock
 import yfinance
 
 class Entity:
@@ -24,11 +24,10 @@ class Entity:
         self.auto_update = entity_auto_update    # if an asset is set to auto-update, then we treat it like a stock
 
         if self.auto_update:            #handling the case that occurs when a user instantiates an asset with an invalid stock symbol
-            cur_price = get_stock_value(entity_stock_symbol)
-            if cur_price == None:
+            if not self.check_valid_stock(entity_stock_symbol):
                 self.auto_update = False
                 print("Stock not found, cannot auto update")
-                
+            cur_price = self.get_stock_value(entity_stock_symbol)
             self.single_value = cur_price
             self.total_value = self.single_value * self.amount
             self.stock_symbol = entity_stock_symbol  # if a stock symbol is not provided, it will be assigned a default value of "n/a" 
@@ -51,7 +50,7 @@ class Entity:
     
     def get_total_value(self):
         if(self.auto_update):
-            self.single_value = get_stock_value(self.stock_symbol)
+            self.single_value = self.get_stock_value(self.stock_symbol)
             self.real_value = self.amount * self.single_value
         return self.real_value
     
@@ -128,36 +127,31 @@ class Entity:
                 print("Auto Update requires a stock symbol")               # then we need to ensure that we are getting a valid stock symbol
                 return False
 
-            cur_price = get_stock_value(new_stock_symbol)
-
-            if cur_price == None:                                   # if the price == None, then that means the stock symbol was invalid
+            if self.check_valid_stock(new_stock_symbol):                                   # if the price == None, then that means the stock symbol was invalid
                 print("invalid stock symbol, cannot update")
                 return False
 
+            cur_price = self.get_stock_value(new_stock_symbol)
             #if we reach this part of the code, we are in a state where the user wants the stock to auto update, and the symbol is valid
             self.auto_update = new_auto_update      #now we update all of the values accordingly
             self.stock_symbol = new_stock_symbol
             self.single_value = cur_price
             self.total_value = self.single_value * self.amount
-
             return True         #update successful
         
         #if we are no longer auto_updating a previously auto updated asset
         #don't need any checks for this
         self.auto_update = new_auto_update  # this will always be false
         self.stock_symbol = "n/a"
-        
         return True         #update successful
     
 
     def set_stock_symbol(self, new_stock_symbol):
 
-        cur_price = get_stock_value(new_stock_symbol)
-
-        if cur_price == None:
+        if not self.check_valid_stock(self.stock_symbol):
             print("invalid stock symbol, cannot update")
             return False
-        
+        cur_price = self.get_stock_value(self.stock_symbol)
         #if the stock symbol is valid, update it accordingly
         self.single_value = cur_price
         self.total_value = self.amount * self.single_value
@@ -167,12 +161,12 @@ class Entity:
     def auto_update_value(self):
         if(self.auto_update):
             
-            cur_price = get_stock_value(self.stock_symbol)
 
-            if cur_price == None:
+            if not self.check_valid_stock(self.stock_symbol):
                 print("invalid stock symbol, cannot update asset value until this is fixed")
                 return False
             
+            cur_price = self.get_stock_symbol(self.stock_symbol)
             self.single_value = cur_price
             self.total_value = self.amount * self.single_value
             return True
@@ -180,24 +174,15 @@ class Entity:
         print("Cannot auto update an asset that does not have the auto_update value set to true")
         return False
     
+
+    def get_stock_value(self, stock_symbol: str) -> float:
+        price = Stock.Stock.get_stock_price(stock_symbol)
+        return price
+
+    def check_valid_stock(self, stock_symbol: str) -> bool:
+        is_valid = Stock.Stock.check_valid_stock_symbol(stock_symbol)
+        return is_valid
     
-
-    
-
-#interface to get the stock value
-#should be treated as private
-#make own file
-#need api factory
-def get_stock_value(stock_symbol):
-
-    try: 
-        stock = yfinance.Ticker(stock_symbol)
-        cur_price = stock.fast_info.get("lastPrice")
-
-        return cur_price
-    except:
-        return None
-
             
 
             
