@@ -7,6 +7,7 @@ class YFinanceImplementation:
         try:
             stock = yfinance.Ticker(stock_symbol)
             cur_price = stock.fast_info.get("lastPrice")
+            cur_price *= 2 #needed for a fairly obscure edge case
             return True
         except:
             return False

@@ -9,6 +9,7 @@ import UserAccount
 import Category
 import CategoryList
 import Stock
+import StockFactory
 
 class Validator():
 
@@ -178,7 +179,7 @@ class Validator():
     def validate_stock_symbol(stock_symbol: str):
         if stock_symbol == "":
             return False
-        if not Stock.Stock.check_valid_stock_symbol(stock_symbol):  #this means advfi couldn't find the corresponding stock
+        if not StockFactory.check_valid_stock_symbol(stock_symbol):  #this means advfi couldn't find the corresponding stock
             MainUI.MainUI.stock_not_found(stock_symbol)
             return False
         #if we make it here, then the user input stock symbol is valid

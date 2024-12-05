@@ -162,7 +162,7 @@ class EntityPortfolio:
     def get_liability_value(self, liability_id):
         for liability in self.liabilities:
             if liability.get_entity_id() == liability_id:
-                return liability.get_entity_value()
+                return liability.get_single_value()
 
     #should only be used once we know for a fact that the entity id is valid
     def get_entity(self, entity_id):
