@@ -106,3 +106,23 @@ class FinancialHealthReport(Report):
         advfi_score = f"AdvFi Score: {self._advfi_score}\n"
         financial_health_report = header + net_worth + items + savings_rate + investment_return + advfi_score
         return financial_health_report
+    
+    def get_header(self) -> str:
+        header = f"Financial Health Report\n{self._report_date}"
+        return header
+    
+    def get_body(self) -> str:
+        body = ""
+        net_worth = f"Net worth: ${self._net_worth}\n\n"
+        items = f"Total asset value: ${self._total_assets}\nTotal debt value: ${self._total_liabilities}\nTotal income: ${self._total_income}\nTotal spending: ${self._total_expenses}\n\n"
+        savings_rate = f"Savings rate: {self._savings_rate:.2f}%\n"
+        inv_return = self._investment_return
+        if inv_return != -1:
+            investment_return = f"Investment return: {self._investment_return}%\n\n"
+        else:
+            investment_return = f"Investment return: N/A\n\n"
+        body = net_worth + items + savings_rate + investment_return
+        return body
+    
+    def get_score(self) -> str:
+        return f"AdvFi Score: {self._advfi_score}"

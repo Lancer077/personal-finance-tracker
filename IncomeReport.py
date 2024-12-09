@@ -48,3 +48,13 @@ class IncomeReport(Report):
         for income in self._income_entries_last_month:
             income_report += f"{income.print_transaction()}\n"
         return income_report
+
+    def get_header(self) -> str:
+        header = f"Income Report\n{self._report_date}"
+        return header
+    
+    def get_body(self) -> str:
+        body = f"Total lifetime income: ${self._total_income}\n\nTotal income from last month: ${self._total_income_last_month}\n\nEach income entry from last month:\n"        
+        for income in self._income_entries_last_month:
+            body += f"{income.print_transaction()}\n"
+        return body

@@ -646,7 +646,7 @@ class Controller:
             user_selection = MainUI.MainUI.financial_reports_menu()
             stop = Validator.Validator.validate_menu_entry(user_selection, MainUI.MainUI.FINANCIAL_REPORTS_MENU_LOW, MainUI.MainUI.FINANCIAL_REPORTS_MENU_HIGH)
         selection = int(user_selection)
-        print("test")
+        #print("test")
         match selection:
             case 0:
                 return
@@ -656,7 +656,7 @@ class Controller:
                 Controller.financial_reports_menu_spending_report()
             case 3:
                 Controller.financial_reports_menu_financial_health_report()
-                pass
+                
             case 4:
                 # Controller.financial_reports_menu_retrieve_report()
                 pass
@@ -667,20 +667,84 @@ class Controller:
         income_report = Operations.Operations.financial_reports_menu_report_operations("income", transaction_list)
         # MainUI.MainUI.utility_print(f"type: {type(income_report)}")
         income_report.generate_report()
-        MainUI.MainUI.financial_reports_menu_report_options("income")
+        stop = False
+        while not stop:
+            user_input = MainUI.MainUI.financial_reports_menu_report_options("income")
+            stop = Validator.Validator.validate_menu_entry(user_input, 0, 3)
+        match int(user_input):
+            case 0:
+                return
+            case 1:
+                return
+            case 2:
+                #pdf stuff
+                filename = MainUI.MainUI.financial_reports_menu_export_to_pdf()
+                header = income_report.get_header()
+                body = income_report.get_body()
+                Operations.Operations.generate_pdf_report(filename, header, body)
+            case 3:
+                #pdf stuff
+                filename = MainUI.MainUI.financial_reports_menu_export_to_pdf()
+                header = income_report.get_header()
+                body = income_report.get_body()
+                Operations.Operations.generate_pdf_report(filename, header, body)
+                return
 
     
     def financial_reports_menu_spending_report():
         spending_report = Operations.Operations.financial_reports_menu_report_operations("spending", transaction_list)
         spending_report.generate_report()
-        MainUI.MainUI.financial_reports_menu_report_options("spending")
+        stop = False
+        while not stop:
+            user_input = MainUI.MainUI.financial_reports_menu_report_options("spending")
+            stop = Validator.Validator.validate_menu_entry(user_input, 0, 3)
+        match int(user_input):
+            case 0:
+                return
+            case 1:
+                return
+            case 2:
+                #pdf stuff
+                filename = MainUI.MainUI.financial_reports_menu_export_to_pdf()
+                header = spending_report.get_header()
+                body = spending_report.get_body()
+                Operations.Operations.generate_pdf_report(filename, header, body)
+            case 3:
+                #pdf stuff
+                filename = MainUI.MainUI.financial_reports_menu_export_to_pdf()
+                header = spending_report.get_header()
+                body = spending_report.get_body()
+                Operations.Operations.generate_pdf_report(filename, header, body)
+                return
         
 
     def financial_reports_menu_financial_health_report():
         financial_health_report = Operations.Operations.financial_reports_menu_report_operations("financial health", transaction_list, entity_portfolio)
         financial_health_report.generate_report()
-        MainUI.MainUI.financial_reports_menu_report_options("financial health")
-
+        stop = False
+        while not stop:
+            user_input = MainUI.MainUI.financial_reports_menu_report_options("financial health")
+            stop = Validator.Validator.validate_menu_entry(user_input, 0, 3)
+        match int(user_input):
+            case 0:
+                return
+            case 1:
+                return
+            case 2:
+                #pdf stuff
+                filename = MainUI.MainUI.financial_reports_menu_export_to_pdf()
+                header = financial_health_report.get_header()
+                body = financial_health_report.get_body()
+                score = financial_health_report.get_score()
+                Operations.Operations.generate_pdf_report(filename, header, body, score)
+            case 3:
+                #pdf stuff
+                filename = MainUI.MainUI.financial_reports_menu_export_to_pdf()
+                header = financial_health_report.get_header()
+                body = financial_health_report.get_body()
+                score = financial_health_report.get_score()
+                Operations.Operations.generate_pdf_report(filename, header, body, score)
+                return
 
     def retrieve_transactions():
         MainUI.MainUI.retrieve_transactions()

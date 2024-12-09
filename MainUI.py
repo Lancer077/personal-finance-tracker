@@ -319,7 +319,8 @@ class MainUI:
         MainUI.clear_screen()
         print(f"1: Save {report_type} report to database")
         print(f"2: Save {report_type} report as PDF")
-        print(f"0: Exit without saving")
+        print(f"3: Save {report_type} report to database and as PDF")
+        print(f"0: Exit without saving report")
         return input()
 
     @staticmethod

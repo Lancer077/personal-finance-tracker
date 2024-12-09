@@ -48,3 +48,13 @@ class SpendingReport(Report):
         for expense in self._expense_entries_last_month:
             spending_report += f"{expense.print_transaction()}\n"
         return spending_report
+
+    def get_header(self) -> str:
+        header = f"Spending Report\n{self._report_date}"
+        return header
+    
+    def get_body(self) -> str:
+        body = f"Total lifetime spending: ${self._total_spending}\n\nTotal spending from last month: ${self._total_spending_last_month}\n\nEach spending entry from last month:\n"
+        for expense in self._expense_entries_last_month:
+            body += f"{expense.print_transaction()}\n"
+        return body

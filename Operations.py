@@ -313,14 +313,14 @@ class Operations:
         return report
 
     # We can use validate_file_name to validate input 
-    def generate_pdf_report(self, filename: str, reportTyp: str, reportStr: str, reportScr = ""):
+    def generate_pdf_report(filename: str, reportTyp: str, reportStr: str, reportScr = ""):
         logo = r"""
             _      __                     ____  _____ 
            / \    |  \   \     /         |        |   
           /---\   |   |   \   /    ===   |--      |   
          /     \  |__/     \_/           |      __|__ 
         """
-        
+        filename += ".pdf"
             # Create a new PDF
         c = canvas.Canvas(filename)
         
@@ -329,31 +329,48 @@ class Operations:
         
         # Draw the logo text
         y_position = 750  # Start drawing at this y-coordinate
+        x_position = 100
         for line in logo.splitlines():
             c.drawString(100, y_position, line)
             y_position -= 15  # Move down by 15 units for the next line
 
         # Set font for the "Income Report" title text
         c.setFont("Helvetica-Bold", 16)
-        
-        # Calculate the width of the "Income Report" text
-        title_text = "Report Type"
-        title_width = c.stringWidth(title_text, "Helvetica-Bold", 16)
-        
-        # Calculate the x position to center the title text
+        lines = reportTyp.split('\n')
+        title_width = c.stringWidth(lines[0], "Helvetica-Bold", 16)
         x_position = (c._pagesize[0] - title_width) / 2  # Center the text on the page
 
+        # Calculate the width of the "Income Report" text
+        report_title = lines[0]
+        report_date = lines[1]
+        y_position -= 30
+        c.drawString(x_position, y_position, report_title)
+        y_position -= 30
+        c.drawString(x_position, y_position, report_date)
+        y_position -= 60
+
+        # Calculate the x position to center the title text
+
         # Draw the "Income Report" text centered
-        c.drawString(x_position, y_position - 30, title_text)  # Position it below the logo
+        #c.drawString(x_position, y_position - 30, lines[0])  # Position it below the logo
 
         # Set font for the "Report" text (left justified)
         c.setFont("Helvetica", 12)
-        
+        x_position = 0
         # Draw the "Report" text below and left justified
-        c.drawString(100, y_position - 60, "Report String")  # Left-justified at the same x as the logo
+        lines = reportStr.split('\n')
+        for line in lines:
+            items = line.split('\t')
+            x_position = 0
+            for item in items:
+                x_position += 110
+                c.drawString(x_position, y_position, item)
+            y_position-=15
+        
+        #c.drawString(100, y_position - 60, reportStr)  # Left-justified at the same x as the logo
 
-        if reportScr:
-            reportScr = "ADV-FI Score: " + str(reportScr)
+        if reportScr != "":
+            reportScr = str(reportScr)
             c.setFont("Helvetica-Bold", 40)
 
             # Calculate the width of the score text for medium alignment
@@ -368,5 +385,5 @@ class Operations:
             c.drawString(medium_x_position, adjusted_y_position, reportScr)
 
             # Save the PDF
-            c.save()
-            print(f"PDF saved as {filename}")
+        c.save()
+        print(f"PDF saved as {filename}")
