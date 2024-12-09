@@ -302,7 +302,7 @@ class MainUI:
         print("\nFinancial Reports Menu")
         print("1: Generate income report")              # when the user generates a report, they will be prompted to save to database, save to pdf, or both
         print("2: Generate spending report")
-        print("3: Generate financial health report")
+        print("3: Generate financial health report") 
         print("4: Retrieve previously generated report from the database")  # goes to a sub-menu where all previously saved reports show up, maybe only display this option if user previously saved report to database
         print("0: Return to main menu")
         return input()
