@@ -17,6 +17,8 @@ import Category
 import mysql.connector
 import MySQLOperations
 import IncomeReport
+import SpendingReport
+import FinancialHealthReport
 
 
 entity_portfolio = EntityPortfolio.EntityPortfolio()
@@ -699,7 +701,25 @@ class Controller:
             case 1:
                 MySQLOperations.MySQLOperations.add_income_report(income_report.to_string()) #REPORT!!!!
             case 2:
-                MySQLOperations.MySQLOperations.get_income_report() #DCHANGE
+                Controller.export_report_to_PDF("income", income_report)
+            case 3:
+                MySQLOperations.MySQLOperations.add_income_report(income_report.to_string()) #REPORT!!!!
+                Controller.export_report_to_PDF("income", income_report)
+
+    
+    def export_report_to_PDF(type: str, report):
+        filename = MainUI.MainUI.financial_reports_menu_export_to_pdf()
+        if type != "financial health":
+            header = report.get_header()
+            body = report.get_body()
+            Operations.Operations.generate_pdf_report(filename, header, body)
+        else:
+            header = report.get_header()
+            body = report.get_body()
+            score = report.get_score()
+            Operations.Operations.generate_pdf_report(filename, header, body, score)
+        
+
 
     
     def financial_reports_menu_spending_report():
@@ -716,7 +736,12 @@ class Controller:
             case 1:
                 MySQLOperations.MySQLOperations.add_spending_report(spending_report.to_string()) #REPORT!!!!
             case 2:
-                MySQLOperations.MySQLOperations.get_spending_report() #DCHANGE
+                Controller.export_report_to_PDF("spending", spending_report)
+            case 3:
+                MySQLOperations.MySQLOperations.add_health_report(spending_report.to_string()) #REPORT!!!!
+                Controller.export_report_to_PDF("spending", spending_report)
+
+                
         
 
     def financial_reports_menu_financial_health_report():
@@ -733,7 +758,12 @@ class Controller:
             case 1:
                 MySQLOperations.MySQLOperations.add_health_report(financial_health_report.to_string()) #REPORT!!!!
             case 2:
-                MySQLOperations.MySQLOperations.get_health_report() 
+                Controller.export_report_to_PDF("financial health", financial_health_report)
+            case 3:
+                MySQLOperations.MySQLOperations.add_health_report(financial_health_report.to_string()) #REPORT!!!!
+                Controller.export_report_to_PDF("financial health", financial_health_report)
+
+
 
     def financial_reports_menu_retrieve_report():
         #MySQLOperations.MySQLOperations.get_report()
