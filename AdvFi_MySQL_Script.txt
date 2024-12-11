@@ -1,3 +1,5 @@
+
+
 -- ADVFI STUFF!
 drop database advfi_database;
 drop table the_user;
@@ -20,6 +22,16 @@ CREATE TABLE the_user (
     password VARCHAR(255) NOT NULL,
     pin INT
 );
+
+
+CREATE TABLE user_state (
+	user_exists BOOLEAN DEFAULT FALSE
+);
+INSERT INTO user_state () VALUES ();
+SELECT * FROM user_state;
+
+-- drop table user_state;
+-- drop table the_user;
 
 -- (1) income (transaction) menu related stuff. Not named "transaction" bc it's a keyword in SQL
 CREATE TABLE income (
@@ -73,6 +85,33 @@ CREATE TABLE category(
     income_count INT,
     expense_count INT,
     asset_count INT,
-    liability_count INT
+    liability_count INT,
+    budget FLOAT default -1.0
 );
+-- drop table category;
 SELECT * FROM category;
+
+-- REPORTS
+CREATE TABLE income_report (
+    report_id INT AUTO_INCREMENT PRIMARY KEY, -- Unique identifier for each report
+    income_entries_string LONGTEXT -- 4 mil char lim to store entire report
+);
+
+-- drop table income_report;
+
+CREATE TABLE spending_report (
+    report_id INT AUTO_INCREMENT PRIMARY KEY, -- Unique identifier for each report
+    income_entries_string LONGTEXT -- 4 mil char lim to store entire report
+);
+
+CREATE TABLE health_report (
+    report_id INT AUTO_INCREMENT PRIMARY KEY, -- Unique identifier for each report
+    income_entries_string LONGTEXT -- 4 mil char lim to store entire report
+);
+
+SELECT * FROM income_report;
+SELECT * FROM spending_report;
+SELECT * FROM health_report;
+
+
+

@@ -221,6 +221,78 @@ class MySQLOperations:
         return True
 
 
+    #ENTITY EDIT METHODS
+    def edit_entity_name(entity_id: str, type: str, new_name: str):
+        try:
+            db = mysql.connector.connect(user='advfi_user', password='advfi_password', host='localhost', database='advfi_database')
+            db_cursor = db.cursor()
+
+            update_query = f"UPDATE {type} SET entity_name = %s WHERE id = %s"
+            db_cursor.execute(update_query, (new_name, entity_id))
+
+            db.commit()
+            print(f"Entity name updated to '{new_name}' for ID {entity_id}.")
+            db_cursor.close()
+            db.close()
+            return True
+        except Exception as e:
+            print(f"Could not update entity name. Error: {e}")
+            return False
+
+    def edit_entity_description(entity_id: str, type: str, new_description: str):
+        try:
+            db = mysql.connector.connect(user='advfi_user', password='advfi_password', host='localhost', database='advfi_database')
+            db_cursor = db.cursor()
+
+            update_query = f"UPDATE {type} SET entity_desc = %s WHERE id = %s"
+            db_cursor.execute(update_query, (new_description, entity_id))
+
+            db.commit()
+            print(f"Entity description updated for ID {entity_id}.")
+            db_cursor.close()
+            db.close()
+            return True
+        except Exception as e:
+            print(f"Could not update entity description. Error: {e}")
+            return False
+
+
+    def edit_entity_amount(entity_id: str, type: str, new_amount: int):
+        try:
+            db = mysql.connector.connect(user='advfi_user', password='advfi_password', host='localhost', database='advfi_database')
+            db_cursor = db.cursor()
+
+            update_query = f"UPDATE {type} SET entity_amount = %s WHERE id = %s"
+            db_cursor.execute(update_query, (new_amount, entity_id))
+
+            db.commit()
+            print(f"Entity amount updated to '{new_amount}' for ID {entity_id}.")
+            db_cursor.close()
+            db.close()
+            return True
+        except Exception as e:
+            print(f"Could not update entity amount. Error: {e}")
+            return False
+
+
+    def edit_entity_value(entity_id: str, type: str, new_value: float):
+        try:
+            db = mysql.connector.connect(user='advfi_user', password='advfi_password', host='localhost', database='advfi_database')
+            db_cursor = db.cursor()
+
+            update_query = f"UPDATE {type} SET entity_value = %s WHERE id = %s"
+            db_cursor.execute(update_query, (new_value, entity_id))
+
+            db.commit()
+            print(f"Entity value updated to '{new_value}' for ID {entity_id}.")
+            db_cursor.close()
+            db.close()
+            return True
+        except Exception as e:
+            print(f"Could not update entity value. Error: {e}")
+            return False
+
+
 
     '''Category stuff!'''
     def add_category(cat_name: str, cat_desc: str):

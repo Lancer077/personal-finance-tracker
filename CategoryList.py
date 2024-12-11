@@ -75,19 +75,3 @@ class CategoryList:
                 #category_adherence = category.get_budget_adherence()
                 budget_adherence_str += f"{category.get_budget_adherence()}\n"
         return budget_adherence_str
-
-
-
-        
-
-
-
-
-
-
-
-
-
-
-
-

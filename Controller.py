@@ -465,13 +465,25 @@ class Controller:
                 MainUI.MainUI.action_cancelled()
                 return
             case 1:
-                asset_obj.set_name(Controller._get_entity_name())
+                #asset_obj.set_name(Controller._get_entity_name())
+                user_input = Controller._get_entity_name()
+                asset_obj.set_name(user_input)
+                MySQLOperations.MySQLOperations.edit_entity_name(id, "asset", user_input)
             case 2:
-                asset_obj.set_description(Controller._get_desc())
+                #asset_obj.set_description(Controller._get_desc())
+                user_input = Controller._get_desc()
+                asset_obj.set_description(user_input)
+                MySQLOperations.MySQLOperations.edit_entity_description(id, "asset", user_input)
             case 3:
-                asset_obj.set_amount(Controller._get_num_owned())
+                #asset_obj.set_amount(Controller._get_num_owned())
+                user_input = Controller._get_num_owned()
+                asset_obj.set_amount(user_input)
+                MySQLOperations.MySQLOperations.edit_entity_amount(id, "asset", user_input)
             case 4:
-                asset_obj.set_single_value(Controller._get_entity_value())
+                #asset_obj.set_single_value(Controller._get_entity_value())
+                user_input = Controller._get_entity_value()
+                asset_obj.set_single_value(user_input)
+                MySQLOperations.MySQLOperations.edit_entity_value(id, "asset", user_input)
         MainUI.MainUI.utility_print_no_clear("Update successful!")
 
     def asset_management_menu_delete_asset():
@@ -583,9 +595,15 @@ class Controller:
                 MainUI.MainUI.action_cancelled()
                 return
             case 1:
-                liability_obj.set_name(Controller._get_entity_name())
+                #liability_obj.set_name(Controller._get_entity_name())
+                user_input = Controller._get_entity_name()
+                liability_obj.set_name(user_input)
+                MySQLOperations.MySQLOperations.edit_entity_name(id, "liability", user_input)
             case 2:
-                liability_obj.set_description(Controller._get_desc())
+                #liability_obj.set_description(Controller._get_desc())
+                user_input = Controller._get_desc()
+                liability_obj.set_description(user_input)
+                MySQLOperations.MySQLOperations.edit_entity_description(id, "liability", user_input)
         MainUI.MainUI.utility_print_no_clear("Update successful!")
     
     def liability_management_menu_make_liability_payment():
